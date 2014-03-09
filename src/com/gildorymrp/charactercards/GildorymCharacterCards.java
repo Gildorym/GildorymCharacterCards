@@ -17,7 +17,7 @@ public class GildorymCharacterCards extends JavaPlugin {
 	protected static final int level = 0;
 
 	public void onEnable() {
-
+		final Gildorym gildorym = (Gildorym) Bukkit.getServer().getPluginManager().getPlugin("Gildorym");
 		this.registerListeners(new Listener[] {
 				new PlayerInteractEntityListener(),
 				new EntityRegainHealthListener(),
@@ -27,7 +27,6 @@ public class GildorymCharacterCards extends JavaPlugin {
 
 			@Override
 			public void run() {
-				Gildorym gildorym = (Gildorym) Bukkit.getServer().getPluginManager().getPlugin("Gildorym");
 				for (String playerName : gildorym.getActiveCharacters().keySet()) {
 					GildorymCharacter gChar = gildorym.getActiveCharacters().get(playerName);
 					Integer maxHealth = CharacterCard.calculateHealth(gChar);
@@ -70,7 +69,7 @@ public class GildorymCharacterCards extends JavaPlugin {
 		}, 2400L, 2400L);
 		this.getCommand("setage").setExecutor(new SetAgeCommand());
 		this.getCommand("setgender").setExecutor(new SetGenderCommand());
-		this.getCommand("setrace").setExecutor(new SetRaceCommand());
+		this.getCommand("setrace").setExecutor(new SetRaceCommand(gildorym));
 		this.getCommand("setinfo").setExecutor(new SetInfoCommand());
 		this.getCommand("addinfo").setExecutor(new AddInfoCommand());
 		this.getCommand("char").setExecutor(new CharCommand());

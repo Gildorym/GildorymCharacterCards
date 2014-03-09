@@ -9,9 +9,15 @@ import org.bukkit.entity.Player;
 
 import com.gildorymrp.gildorym.Gildorym;
 import com.gildorymrp.gildorym.GildorymCharacter;
+import com.gildorymrp.gildorym.MySQLDatabase;
 
 public class SetRaceCommand implements CommandExecutor {
-
+	private MySQLDatabase sqlDB;
+	
+	public SetRaceCommand(Gildorym gildorym) {
+		this.sqlDB = gildorym.getMySQLDatabase();
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		Gildorym gildorym = (Gildorym) Bukkit.getServer().getPluginManager().getPlugin("Gildorym");
@@ -54,6 +60,7 @@ public class SetRaceCommand implements CommandExecutor {
 		try {
 			characterCard.setRace(Race.valueOf(args[0].toUpperCase()));
 			sender.sendMessage(ChatColor.GREEN + "Set race to " + Race.valueOf(args[0].toUpperCase()).toString());
+			sqlDB.saveCharacter(gChar);
 		} catch (IllegalArgumentException exception) {
 			sender.sendMessage(ChatColor.RED + "That race does not exist!");
 			sender.sendMessage(ChatColor.YELLOW + "If the race is a subrace, you may want to choose the main race.");
