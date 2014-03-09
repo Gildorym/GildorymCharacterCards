@@ -5,29 +5,26 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import com.gildorymrp.gildorymclasses.GildorymClasses;
+import com.gildorymrp.gildorym.Gildorym;
 
 public class AddInfoCommand implements CommandExecutor {
 
-	private GildorymCharacterCards plugin;
-
-	public AddInfoCommand(GildorymCharacterCards plugin) {
-		this.plugin = plugin;
-	}
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		GildorymClasses gildorymClasses = (GildorymClasses) Bukkit.getServer().getPluginManager().getPlugin("GildorymClasses");
-		if (plugin.getCharacterCards().get(sender.getName()) == null) {
-			plugin.getCharacterCards().put(sender.getName(), new CharacterCard(0, Gender.UNKNOWN, "", Race.UNKNOWN, gildorymClasses.levels.get(sender.getName()), gildorymClasses.classes.get(sender.getName())));
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("You must be a player to use this command!");
+			return true;
 		}
+		Gildorym gildorym = (Gildorym) Bukkit.getServer().getPluginManager().getPlugin("Gildorym");
 		if (args.length >= 1) {
 			String info = "";
 			for (String arg : args) {
 				info += arg + " ";
 			}
-			plugin.getCharacterCards().get(sender.getName()).setDescription(plugin.getCharacterCards().get(sender.getName()).getDescription() + info);
+			CharacterCard characterCard = gildorym.getActiveCharacters().get(sender.getName()).getCharCard();
+			characterCard.setDescription(characterCard.getDescription() + info);
 			sender.sendMessage(ChatColor.GREEN + "Added to description.");
 		} else {
 			sender.sendMessage(ChatColor.RED + "You need to specify some information!");

@@ -2,6 +2,7 @@ name: GildorymCharacterCards
 authors: [Lucariatias, Hohahihehu, melodichand, DreaminCode]
 version: 1.2.10
 main: com.gildorymrp.charactercards.GildorymCharacterCards
+depend: [Gildorym]
 commands:
     setage:
         description: Sets your age
@@ -42,4 +43,7 @@ permissions:
         default: op
     gildorym.hitother:
         description: Allows you to hit/heal another player and view their health remotely
+        default: op
+    gildorym.viewalignment:
+        description: Allows you to see another character's alignment
         default: op

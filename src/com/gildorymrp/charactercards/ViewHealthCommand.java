@@ -7,8 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gildorymrp.gildorymclasses.CharacterClass;
-import com.gildorymrp.gildorymclasses.GildorymClasses;
+import com.gildorymrp.gildorym.Gildorym;
+import com.gildorymrp.gildorym.GildorymCharacter;
 
 public class ViewHealthCommand implements CommandExecutor {
 	
@@ -41,18 +41,11 @@ public class ViewHealthCommand implements CommandExecutor {
 						+ "That player does not exist!");
 				return true;
 			} else {
-				GildorymClasses gildorymClasses = (GildorymClasses) Bukkit.getServer().getPluginManager().getPlugin("GildorymClasses");
-				CharacterCard characterCard = plugin.getCharacterCards().get(player.getName());
-				if (characterCard == null) {
-					characterCard = new CharacterCard(0, Gender.UNKNOWN, "", Race.UNKNOWN, gildorymClasses.levels.get(player.getName()), gildorymClasses.classes.get(player.getName()));
-					plugin.getCharacterCards().put(player.getName(), characterCard);
-				}
-				
-				CharacterClass clazz = gildorymClasses.classes.get(player.getName());
-				Integer level = gildorymClasses.levels.get(player.getName());
-				Race race = characterCard.getRace();
+				Gildorym gildorym = (Gildorym) Bukkit.getServer().getPluginManager().getPlugin("Gildorym");
+				GildorymCharacter gChar = gildorym.getActiveCharacters().get(player.getName());
+				CharacterCard characterCard = gChar.getCharCard();
 
-				Integer maxHealth = CharacterCard.calculateHealth(clazz, race, level);
+				Integer maxHealth = CharacterCard.calculateHealth(gChar);
 				Integer health = characterCard.getHealth();
 				
 				ChatColor healthColor;

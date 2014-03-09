@@ -1,6 +1,8 @@
 package com.gildorymrp.charactercards;
 
 import java.io.Serializable;
+
+import com.gildorymrp.gildorym.GildorymCharacter;
 import com.gildorymrp.gildorymclasses.CharacterClass;
 
 public class CharacterCard implements Serializable {
@@ -11,13 +13,17 @@ public class CharacterCard implements Serializable {
 	private String description;
 	private Race race;
 	private Integer health;
+	private CharacterBehavior behavior;
+	private CharacterMorality morality;
 
-	public CharacterCard(Integer age, Gender gender, String description, Race race, Integer level, CharacterClass clazz) {
+	public CharacterCard(Integer age, Gender gender, String description, Race race, Integer level, CharacterClass clazz, CharacterBehavior behavior, CharacterMorality morality) {
 		this.age = age;
 		this.gender = gender;
 		this.description = description;
 		this.race = race;
 		this.health = calculateHealth(clazz, race, level);
+		this.behavior = behavior;
+		this.morality = morality;
 	}
 
 	/**
@@ -90,6 +96,22 @@ public class CharacterCard implements Serializable {
 		this.health = health;
 	}
 	
+	public CharacterBehavior getBehavior() {
+		return behavior;
+	}
+	
+	public void setBehavior(CharacterBehavior behavior) {
+		this.behavior = behavior;
+	}
+	
+	public CharacterMorality getMorality() {
+		return morality;
+	}
+	
+	public void setMorality(CharacterMorality morality) {
+		this.morality = morality;
+	}
+	
 	public static Integer calculateHealth(CharacterClass clazz, Race race, Integer level) {
 		Integer health = 5;
 		int rate;
@@ -155,7 +177,72 @@ public class CharacterCard implements Serializable {
 	public String toString() {
 		return "CharacterCard [age=" + age + ", gender=" + gender
 				+ ", description=" + description + ", race=" + race
-				+ ", health=" + health + "]";
+				+ ", health=" + health + ", behavior=" + behavior + ",morality" + morality + "]";
+	}
+
+	public static Integer calculateHealth(GildorymCharacter gChar) {
+		Integer health = 5;
+		Integer level = gChar.getLevel();
+		CharacterClass clazz = gChar.getCharClass();
+		Race race = gChar.getCharCard().getRace();
+		
+		int rate;
+		
+		if (level == null) {
+			level = 0;
+		}
+		
+		if (clazz == null) {
+			rate = 100;
+		} else {		
+			switch (clazz) 
+			{
+			case BARBARIAN:
+				rate = 3;
+				break;
+
+			case FIGHTER:
+			case PALADIN:
+				rate = 4;
+				break;
+
+			case MONK:
+			case CLERIC:
+			case DRUID:
+			case RANGER:
+				rate = 5;
+				break;
+
+			case ROGUE:
+			case BARD:
+				rate = 6;
+				break;
+
+			case WIZARD:
+			case SORCERER:
+				rate = 7;
+				break;
+
+			default:
+				rate = 100;
+				break;
+			}	
+		}
+
+		if (race == Race.ELF) {
+			health -= 1;
+			rate += 1;
+		} else if (race == Race.DWARF) {
+			health += 1;
+			rate -= 1;
+		} else if (race == Race.GNOME) {
+			health += 1;
+			rate -= 1;
+		}
+		
+		health += (int) Math.floor(level / rate);
+		
+		return health;
 	}
 
 	

@@ -7,19 +7,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gildorymrp.gildorymclasses.GildorymClasses;
+import com.gildorymrp.gildorym.Gildorym;
+import com.gildorymrp.gildorym.GildorymCharacter;
 
 public class SetRaceCommand implements CommandExecutor {
 
-	private GildorymCharacterCards plugin;
-
-	public SetRaceCommand(GildorymCharacterCards plugin) {
-		this.plugin = plugin;
-	}
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		GildorymClasses gildorymClasses = (GildorymClasses) Bukkit.getServer().getPluginManager().getPlugin("GildorymClasses");
+		Gildorym gildorym = (Gildorym) Bukkit.getServer().getPluginManager().getPlugin("Gildorym");
 		
 		Player player = null;
 		if (args.length < 1) {
@@ -46,9 +41,10 @@ public class SetRaceCommand implements CommandExecutor {
 			}
 		}
 		
-		if (plugin.getCharacterCards().get(player.getName()) == null) {
-			plugin.getCharacterCards().put(player.getName(), new CharacterCard(0, Gender.UNKNOWN, "", Race.UNKNOWN, gildorymClasses.levels.get(sender.getName()), gildorymClasses.classes.get(sender.getName())));
-		} else if (plugin.getCharacterCards().get(player.getName()).getRace() != Race.UNKNOWN) {
+		GildorymCharacter gChar = gildorym.getActiveCharacters().get(player.getName());
+		CharacterCard characterCard = gChar.getCharCard();
+		
+		if (characterCard.getRace() != Race.UNKNOWN) {
 			if (!sender.hasPermission("gildorym.setraceother")) {
 				sender.sendMessage(ChatColor.RED
 						+ "You have already set your race!");
@@ -56,7 +52,7 @@ public class SetRaceCommand implements CommandExecutor {
 		}
 		
 		try {
-			plugin.getCharacterCards().get(player.getName()).setRace(Race.valueOf(args[0].toUpperCase()));
+			characterCard.setRace(Race.valueOf(args[0].toUpperCase()));
 			sender.sendMessage(ChatColor.GREEN + "Set race to " + Race.valueOf(args[0].toUpperCase()).toString());
 		} catch (IllegalArgumentException exception) {
 			sender.sendMessage(ChatColor.RED + "That race does not exist!");

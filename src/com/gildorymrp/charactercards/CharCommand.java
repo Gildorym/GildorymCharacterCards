@@ -7,46 +7,39 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gildorymrp.gildorymclasses.CharacterClass;
-import com.gildorymrp.gildorymclasses.GildorymClasses;
+import com.gildorymrp.gildorym.Gildorym;
+import com.gildorymrp.gildorym.GildorymCharacter;
 
 public class CharCommand implements CommandExecutor {
 
-	private GildorymCharacterCards plugin;
-
-	public CharCommand(GildorymCharacterCards plugin) {
-		this.plugin = plugin;
-	}
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		GildorymClasses gildorymClasses = (GildorymClasses) Bukkit.getServer().getPluginManager().getPlugin("GildorymClasses");
-		
-		if (plugin.getCharacterCards().get(sender.getName()) == null) {
-			plugin.getCharacterCards().put(sender.getName(), new CharacterCard(0, Gender.UNKNOWN, "", Race.UNKNOWN, gildorymClasses.levels.get(sender.getName()), gildorymClasses.classes.get(sender.getName())));
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("You must be a player to use this command!");
+			return true;
 		}
-		
+
 		sender.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + ((Player) sender).getDisplayName() + ChatColor.BLUE + ChatColor.BOLD + "'s character card");
-		
-		CharacterCard characterCard = plugin.getCharacterCards().get(sender.getName());
-		Race race = characterCard.getRace();
-		CharacterClass clazz;
-		Integer level;
-		
-		try {
-			clazz = gildorymClasses.classes.get(sender.getName());
-			level = gildorymClasses.levels.get(sender.getName());
-		} catch (Exception ex) {
-			clazz = null;
-			level = 0;
-		}
-		
-		Integer maxHealth = CharacterCard.calculateHealth(clazz, race, level);
+
+		Gildorym gildorym = (Gildorym) Bukkit.getServer().getPluginManager().getPlugin("Gildorym");
+		GildorymCharacter gChar = gildorym.getActiveCharacters().get(sender.getName());
+		CharacterCard characterCard = gChar.getCharCard();
+
+		Integer maxHealth = CharacterCard.calculateHealth(gChar);
 		sender.sendMessage(ChatColor.GRAY + "Health: " + ChatColor.BLUE + characterCard.getHealth() + "/" + maxHealth);
 		sender.sendMessage(ChatColor.GRAY + "Age: " + ChatColor.WHITE + characterCard.getAge());
 		sender.sendMessage(ChatColor.GRAY + "Gender: " + ChatColor.WHITE + characterCard.getGender().toString());
 		sender.sendMessage(ChatColor.GRAY + "Race: " + ChatColor.WHITE + characterCard.getRace().toString());
 		sender.sendMessage(ChatColor.GRAY + "Description: " + ChatColor.WHITE + characterCard.getDescription());
+		String alignmentMessage = ChatColor.GRAY + "Alignment: " + ChatColor.WHITE;
+		if (characterCard.getBehavior() == CharacterBehavior.UNKNOWN || characterCard.getMorality() == CharacterMorality.UNKNOWN) {
+			alignmentMessage += "UNKNOWN";
+		} else if (characterCard.getBehavior() == CharacterBehavior.NEUTRAL && characterCard.getMorality() == CharacterMorality.NEUTRAL) {
+			alignmentMessage += "TRUE NEUTRAL";
+		} else {
+			alignmentMessage += characterCard.getBehavior() + " " + characterCard.getMorality();
+		}
+		sender.sendMessage(alignmentMessage);
 		return true;
 	}
 
