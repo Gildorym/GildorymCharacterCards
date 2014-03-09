@@ -1,6 +1,6 @@
 name: GildorymCharacterCards
-authors: [Lucariatias, Hohahihehu, melodichand, DreaminCode]
-version: 1.2.10
+authors: [Lucariatias, Hohahihehu, melodichand, tjstretchalot]
+version: 2.0
 main: com.gildorymrp.charactercards.GildorymCharacterCards
 depend: [Gildorym]
 commands:
