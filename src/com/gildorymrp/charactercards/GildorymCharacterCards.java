@@ -67,15 +67,15 @@ public class GildorymCharacterCards extends JavaPlugin {
 			}
 
 		}, 2400L, 2400L);
-		this.getCommand("setage").setExecutor(new SetAgeCommand());
-		this.getCommand("setgender").setExecutor(new SetGenderCommand());
+		this.getCommand("setage").setExecutor(new SetAgeCommand(gildorym));
+		this.getCommand("setgender").setExecutor(new SetGenderCommand(gildorym));
 		this.getCommand("setrace").setExecutor(new SetRaceCommand(gildorym));
-		this.getCommand("setinfo").setExecutor(new SetInfoCommand());
-		this.getCommand("addinfo").setExecutor(new AddInfoCommand());
+		this.getCommand("setinfo").setExecutor(new SetInfoCommand(gildorym));
+		this.getCommand("addinfo").setExecutor(new AddInfoCommand(gildorym));
 		this.getCommand("char").setExecutor(new CharCommand());
-		this.getCommand("takehit").setExecutor(new TakeHitCommand());
-		this.getCommand("dealhit").setExecutor(new DealHitCommand(this));
-		this.getCommand("healhit").setExecutor(new HealHitCommand(this));
+		this.getCommand("takehit").setExecutor(new TakeHitCommand(gildorym));
+		this.getCommand("dealhit").setExecutor(new DealHitCommand(gildorym, this));
+		this.getCommand("healhit").setExecutor(new HealHitCommand(gildorym, this));
 		this.getCommand("viewhealth").setExecutor(new ViewHealthCommand(this));
 	}
 	

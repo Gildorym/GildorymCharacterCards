@@ -9,8 +9,15 @@ import org.bukkit.entity.Player;
 
 import com.gildorymrp.gildorym.Gildorym;
 import com.gildorymrp.gildorym.GildorymCharacter;
+import com.gildorymrp.gildorym.MySQLDatabase;
 
 public class TakeHitCommand implements CommandExecutor {
+
+	private MySQLDatabase sqlDB;
+
+	public TakeHitCommand(Gildorym gildorym) {
+		this.sqlDB = gildorym.getMySQLDatabase();
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -25,6 +32,7 @@ public class TakeHitCommand implements CommandExecutor {
 		GildorymCharacter gChar = gildorym.getActiveCharacters().get(player.getName());
 		CharacterCard characterCard = gChar.getCharCard();
 		characterCard.setHealth(characterCard.getHealth() - 1);
+		sqlDB.saveCharacter(gChar);
 		sender.sendMessage(ChatColor.RED + "Took a hit!");
 		return true;
 	}

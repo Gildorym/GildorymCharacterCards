@@ -9,13 +9,17 @@ import org.bukkit.entity.Player;
 
 import com.gildorymrp.gildorym.Gildorym;
 import com.gildorymrp.gildorym.GildorymCharacter;
+import com.gildorymrp.gildorym.MySQLDatabase;
 
 public class DealHitCommand implements CommandExecutor {
+	private Gildorym gildorym;
+	private GildorymCharacterCards plugin;
+	private MySQLDatabase sqlDB;
 
-	GildorymCharacterCards plugin;
-
-	public DealHitCommand(GildorymCharacterCards plugin) {
+	public DealHitCommand(Gildorym gildorym, GildorymCharacterCards plugin) {
+		this.gildorym = gildorym;
 		this.plugin = plugin;
+		this.sqlDB = gildorym.getMySQLDatabase();
 	}
 
 	@Override
@@ -38,13 +42,13 @@ public class DealHitCommand implements CommandExecutor {
 						+ "That player does not exist!");
 				return true;
 			} else {
-				Gildorym gildorym = (Gildorym) Bukkit.getServer().getPluginManager().getPlugin("Gildorym");
 				GildorymCharacter gChar = gildorym.getActiveCharacters().get(player.getName());
 				CharacterCard characterCard = gChar.getCharCard();
 
 				Integer maxHealth = CharacterCard.calculateHealth(gChar);
 
 				characterCard.setHealth(characterCard.getHealth() - 1);
+				sqlDB.saveCharacter(gChar);
 				Integer newHealth = characterCard.getHealth();
 
 				ChatColor healthColor;

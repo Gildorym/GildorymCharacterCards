@@ -9,9 +9,15 @@ import org.bukkit.entity.Player;
 
 import com.gildorymrp.gildorym.Gildorym;
 import com.gildorymrp.gildorym.GildorymCharacter;
+import com.gildorymrp.gildorym.MySQLDatabase;
 
 public class SetInfoCommand implements CommandExecutor {
-
+	private MySQLDatabase sqlDB;
+	
+	public SetInfoCommand(Gildorym gildorym) {
+		this.sqlDB = gildorym.getMySQLDatabase();
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		Player player;
@@ -30,6 +36,7 @@ public class SetInfoCommand implements CommandExecutor {
 				info += arg + " ";
 			}
 			characterCard.setDescription(info);
+			sqlDB.saveCharacter(gChar);
 			sender.sendMessage(ChatColor.GREEN + "Set description.");
 		} else {
 			sender.sendMessage(ChatColor.RED + "You need to specify some information!");

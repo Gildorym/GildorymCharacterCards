@@ -8,8 +8,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gildorymrp.gildorym.Gildorym;
+import com.gildorymrp.gildorym.GildorymCharacter;
+import com.gildorymrp.gildorym.MySQLDatabase;
 
 public class AddInfoCommand implements CommandExecutor {
+
+	private MySQLDatabase sqlDB;
+
+	public AddInfoCommand(Gildorym gildorym) {
+		this.sqlDB = gildorym.getMySQLDatabase();
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -23,8 +31,10 @@ public class AddInfoCommand implements CommandExecutor {
 			for (String arg : args) {
 				info += arg + " ";
 			}
-			CharacterCard characterCard = gildorym.getActiveCharacters().get(sender.getName()).getCharCard();
+			GildorymCharacter gChar = gildorym.getActiveCharacters().get(sender.getName());
+			CharacterCard characterCard = gChar.getCharCard();
 			characterCard.setDescription(characterCard.getDescription() + info);
+			sqlDB.saveCharacter(gChar);
 			sender.sendMessage(ChatColor.GREEN + "Added to description.");
 		} else {
 			sender.sendMessage(ChatColor.RED + "You need to specify some information!");

@@ -9,13 +9,18 @@ import org.bukkit.entity.Player;
 
 import com.gildorymrp.gildorym.Gildorym;
 import com.gildorymrp.gildorym.GildorymCharacter;
+import com.gildorymrp.gildorym.MySQLDatabase;
 
 public class HealHitCommand implements CommandExecutor {
 
-	GildorymCharacterCards plugin;
+	private Gildorym gildorym;
+	private GildorymCharacterCards plugin;
+	private MySQLDatabase sqlDB;
 
-	public HealHitCommand(GildorymCharacterCards plugin) {
+	public HealHitCommand(Gildorym gildorym, GildorymCharacterCards plugin) {
+		this.gildorym = gildorym;
 		this.plugin = plugin;
+		this.sqlDB = gildorym.getMySQLDatabase();
 	}
 
 	@Override
@@ -49,6 +54,7 @@ public class HealHitCommand implements CommandExecutor {
 				Integer maxHealth = CharacterCard.calculateHealth(gChar);
 
 				characterCard.setHealth(characterCard.getHealth() + 1);
+				sqlDB.saveCharacter(gChar);
 				Integer newHealth = characterCard.getHealth();
 
 				ChatColor healthColor;

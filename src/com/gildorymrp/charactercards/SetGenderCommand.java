@@ -9,8 +9,15 @@ import org.bukkit.entity.Player;
 
 import com.gildorymrp.gildorym.Gildorym;
 import com.gildorymrp.gildorym.GildorymCharacter;
+import com.gildorymrp.gildorym.MySQLDatabase;
 
 public class SetGenderCommand implements CommandExecutor {
+
+	private MySQLDatabase sqlDB;
+
+	public SetGenderCommand(Gildorym gildorym) {
+		this.sqlDB = gildorym.getMySQLDatabase();
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -52,6 +59,7 @@ public class SetGenderCommand implements CommandExecutor {
 
 		try {
 			characterCard.setGender(Gender.valueOf(args[0].toUpperCase()));
+			sqlDB.saveCharacter(gChar);
 			sender.sendMessage(ChatColor.GREEN + "Set gender to " + Gender.valueOf(args[0].toUpperCase()).toString());
 		} catch (IllegalArgumentException exception) {
 			sender.sendMessage(ChatColor.RED + "That gender isn't recognized!");

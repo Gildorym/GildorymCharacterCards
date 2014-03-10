@@ -9,8 +9,14 @@ import org.bukkit.entity.Player;
 
 import com.gildorymrp.gildorym.Gildorym;
 import com.gildorymrp.gildorym.GildorymCharacter;
+import com.gildorymrp.gildorym.MySQLDatabase;
 
 public class SetAgeCommand implements CommandExecutor {
+	private MySQLDatabase sqlDB;
+
+	public SetAgeCommand(Gildorym gildorym) {
+		this.sqlDB = gildorym.getMySQLDatabase();
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -27,6 +33,7 @@ public class SetAgeCommand implements CommandExecutor {
 		if (args.length >= 1) {
 			try {
 				characterCard.setAge(Integer.parseInt(args[0]));
+				sqlDB.saveCharacter(gChar);
 				sender.sendMessage(ChatColor.GREEN + "Set age to " + args[0]);
 			} catch (NumberFormatException exception) {
 				sender.sendMessage(ChatColor.RED + "You need to specify a number!");
