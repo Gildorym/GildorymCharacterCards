@@ -18,6 +18,7 @@ public class TakeHitCommand implements CommandExecutor {
 		plugin.getCharacterCards().get(sender.getName()).setHealth(plugin.getCharacterCards().get(sender.getName()).getHealth() - 1);
 		sender.sendMessage(ChatColor.RED + "Took a hit!");
 		return true;
+		//TODO: Add a 16 block radius message to everyone around them. (Why wasn;t it here in the first place?)
 	}
 
 }
