@@ -12,15 +12,17 @@ public class CharacterCard implements Serializable {
 	private Gender gender;
 	private String description;
 	private Race race;
+	private Subrace subrace;
 	private Integer health;
 	private CharacterBehavior behavior;
 	private CharacterMorality morality;
 
-	public CharacterCard(Integer age, Gender gender, String description, Race race, Integer level, CharacterClass clazz, CharacterBehavior behavior, CharacterMorality morality) {
+	public CharacterCard(Integer age, Gender gender, String description, Race race, Subrace subrace, Integer level, CharacterClass clazz, CharacterBehavior behavior, CharacterMorality morality) {
 		this.age = age;
 		this.gender = gender;
 		this.description = description;
 		this.race = race;
+		this.subrace = subrace;
 		this.health = calculateHealth(clazz, race, level);
 		this.behavior = behavior;
 		this.morality = morality;
@@ -80,6 +82,14 @@ public class CharacterCard implements Serializable {
 	 */
 	public void setRace(Race race) {
 		this.race = race;
+	}
+	
+	public Subrace getSubrace() {
+		return subrace;
+	}
+	
+	public void setSubrace(Subrace subrace) {
+		this.subrace = subrace;
 	}
 
 	/**

@@ -11,5 +11,4 @@ public enum Race {
 	HUMAN,
 	UNKNOWN,
 	OTHER;
-
 }
