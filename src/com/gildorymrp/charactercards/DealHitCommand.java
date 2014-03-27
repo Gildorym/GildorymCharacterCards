@@ -81,9 +81,10 @@ public class DealHitCommand implements CommandExecutor {
 						+ ChatColor.RED + " was dealt a hit! " + ChatColor.WHITE
 						+ "(" + healthColor + newHealth + "/" + maxHealth
 						+ ChatColor.WHITE + ")");
-				player.sendMessage(ChatColor.RED + "You were dealt a hit! "
-						+ ChatColor.WHITE + "(" + healthColor + newHealth + "/"
-						+ maxHealth + ChatColor.WHITE + ")");
+				GildorymCharacterCards.sendRadiusMessage(player, ChatColor.WHITE + player.getDisplayName()
+						+ ChatColor.RED + " was dealt a hit! " + ChatColor.WHITE
+						+ "(" + healthColor + newHealth + "/" + maxHealth
+						+ ChatColor.WHITE + ")", 24);
 				return true;
 			}
 		}

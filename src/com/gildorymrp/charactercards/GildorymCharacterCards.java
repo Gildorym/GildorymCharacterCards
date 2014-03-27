@@ -106,5 +106,14 @@ public class GildorymCharacterCards extends JavaPlugin {
 			this.getServer().getPluginManager().registerEvents(listener, this);
 		}
 	}
+	
+	public static void sendRadiusMessage(Player focus, String message, int radius) {
+		for (Player player : focus.getWorld().getPlayers()) {
+			if (player.getLocation().distance(
+					focus.getLocation()) <= radius) {
+				player.sendMessage(message);
+			}
+		}
+	}
 
 }

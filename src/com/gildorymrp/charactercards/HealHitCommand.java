@@ -44,7 +44,7 @@ public class HealHitCommand implements CommandExecutor {
 			} else {
 				GildorymClasses gildorymClasses = (GildorymClasses) Bukkit.getServer().getPluginManager().getPlugin("GildorymClasses");
 				CharacterCard characterCard = plugin.getCharacterCards().get(player.getName());
-				
+
 				if (characterCard == null) {
 					characterCard = new CharacterCard(0, Gender.UNKNOWN, "", Race.UNKNOWN, gildorymClasses.levels.get(player.getName()), gildorymClasses.classes.get(player.getName()));
 					plugin.getCharacterCards().put(player.getName(), characterCard);
@@ -53,11 +53,11 @@ public class HealHitCommand implements CommandExecutor {
 				CharacterClass clazz = gildorymClasses.classes.get(player.getName());
 				Integer level = gildorymClasses.levels.get(player.getName());
 				Race race = characterCard.getRace();
-				
+
 				Integer maxHealth = CharacterCard.calculateHealth(clazz, race, level);
 
 				plugin.getCharacterCards().get(player.getName())
-						.setHealth(characterCard.getHealth() + 1);
+				.setHealth(characterCard.getHealth() + 1);
 				Integer newHealth = plugin.getCharacterCards()
 						.get(player.getName()).getHealth();
 
@@ -78,12 +78,13 @@ public class HealHitCommand implements CommandExecutor {
 				}
 
 				sender.sendMessage(ChatColor.WHITE + player.getDisplayName()
-						+ ChatColor.GREEN + " was healed one hit! "
+						+ ChatColor.GREEN + " was healed! "
 						+ ChatColor.WHITE + "(" + healthColor + newHealth + "/"
 						+ maxHealth + ChatColor.WHITE + ")");
-				player.sendMessage(ChatColor.GREEN + "You were healed one hit! "
+				GildorymCharacterCards.sendRadiusMessage(player, ChatColor.WHITE + player.getDisplayName()
+						+ ChatColor.GREEN + " was healed! "
 						+ ChatColor.WHITE + "(" + healthColor + newHealth + "/"
-						+ maxHealth + ChatColor.WHITE + ")");
+						+ maxHealth + ChatColor.WHITE + ")", 24);
 				return true;
 			}
 		}
