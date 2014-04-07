@@ -5,26 +5,35 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionType;
 
 import com.gildorymrp.gildorymclasses.CharacterClass;
 import com.gildorymrp.gildorymclasses.GildorymClasses;
 
-public class PlayerItemConsumeListener {
+public class PlayerItemConsumeListener implements Listener{
 
 	GildorymCharacterCards plugin;
 
 	public PlayerItemConsumeListener(GildorymCharacterCards plugin) {
 		this.plugin = plugin;
 	}	
-	public void onPlayerItemConsumeEvent(PlayerItemConsumeEvent event) {	
+	
+	@EventHandler
+	public void onPlayerItemConsumeEvent(PlayerItemConsumeEvent event) {
 		if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
-			if (event.getPlayer().getItemInHand() != null) {
-				if (event.getPlayer().getItemInHand().getType() == Material.POTION && Potion.fromItemStack(event.getItem()).getType() == PotionType.INSTANT_HEAL) {
-					Potion potion = Potion.fromItemStack(event.getItem());
-					int healingAmount = potion.getLevel();
+			if (event.getItem() != null) {
+				if (event.getItem().getType() == Material.POTION) {
+					int healingAmount = 0;
+					if (event.getItem().getDurability() == 8261 || event.getItem().getDurability() == 8197) {
+						healingAmount = 1;
+					} else if (event.getItem().getDurability() == 8229 ) {
+						healingAmount = 2;
+					} else {
+						return;
+					}
+					
 					Player player = event.getPlayer();
 					GildorymClasses gildorymClasses = (GildorymClasses) Bukkit.getServer().getPluginManager().getPlugin("GildorymClasses");
 					CharacterCard characterCard = plugin.getCharacterCards().get(player.getName());
@@ -40,8 +49,12 @@ public class PlayerItemConsumeListener {
 
 					Integer maxHealth = CharacterCard.calculateHealth(clazz, race, level);
 
-					plugin.getCharacterCards().get(player.getName())
-					.setHealth(characterCard.getHealth() + healingAmount);
+					if (characterCard.getHealth() + healingAmount <= maxHealth) {
+						characterCard.setHealth(characterCard.getHealth() + healingAmount);
+					} else if (characterCard.getHealth() < maxHealth) {
+						characterCard.setHealth(maxHealth);
+					} 
+					
 					Integer newHealth = plugin.getCharacterCards()
 							.get(player.getName()).getHealth();
 
@@ -62,7 +75,7 @@ public class PlayerItemConsumeListener {
 					}
 
 					GildorymCharacterCards.sendRadiusMessage(player, ChatColor.WHITE + player.getDisplayName()
-							+ ChatColor.GREEN + " has drank a potion and was healed! "
+							+ ChatColor.GREEN + " has drunk a potion and was healed! "
 							+ ChatColor.WHITE + "(" + healthColor + newHealth + "/"
 							+ maxHealth + ChatColor.WHITE + ")", 24);
 				}

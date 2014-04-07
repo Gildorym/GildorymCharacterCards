@@ -32,6 +32,7 @@ public class GildorymCharacterCards extends JavaPlugin {
 		this.registerListeners(new Listener[] {
 				new PlayerInteractEntityListener(this),
 				new EntityRegainHealthListener(),
+				new PlayerItemConsumeListener(this)
 		});
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {	
 
