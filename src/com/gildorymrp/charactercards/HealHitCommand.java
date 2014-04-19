@@ -1,6 +1,5 @@
 package com.gildorymrp.charactercards;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -47,7 +46,6 @@ public class HealHitCommand implements CommandExecutor {
 						+ "That player does not exist!");
 				return true;
 			} else {
-				Gildorym gildorym = (Gildorym) Bukkit.getServer().getPluginManager().getPlugin("Gildorym");
 				GildorymCharacter gChar = gildorym.getActiveCharacters().get(player.getName());
 				CharacterCard characterCard = gChar.getCharCard();
 				
