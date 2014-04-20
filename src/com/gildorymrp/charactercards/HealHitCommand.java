@@ -36,7 +36,8 @@ public class HealHitCommand implements CommandExecutor {
 				}
 			} else { 
 				player = plugin.getServer().getPlayer(args[0]);
-			}
+			} 
+			
 			if (player == null) {
 				sender.sendMessage(ChatColor.RED
 						+ "That player does not exist!");
@@ -50,16 +51,22 @@ public class HealHitCommand implements CommandExecutor {
 					plugin.getCharacterCards().put(player.getName(), characterCard);
 				}
 
-				CharacterClass clazz = gildorymClasses.classes.get(player.getName());
-				Integer level = gildorymClasses.levels.get(player.getName());
 				Race race = characterCard.getRace();
+				CharacterClass clazz;
+				Integer level;
+				
+				try {
+				clazz = gildorymClasses.classes.get(player.getName());
+				level = gildorymClasses.levels.get(player.getName());
+				} catch (Exception ex) {
+					clazz = null;
+					level = 0;
+				}
 
 				Integer maxHealth = CharacterCard.calculateHealth(clazz, race, level);
-
-				plugin.getCharacterCards().get(player.getName())
-				.setHealth(characterCard.getHealth() + 1);
-				Integer newHealth = plugin.getCharacterCards()
-						.get(player.getName()).getHealth();
+				
+				plugin.getCharacterCards().get(player.getName()).setHealth(characterCard.getHealth() + 1);
+				Integer newHealth = plugin.getCharacterCards().get(player.getName()).getHealth();
 
 				ChatColor healthColor;
 				double healthFraction = newHealth / (double) maxHealth;

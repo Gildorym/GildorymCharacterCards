@@ -33,6 +33,7 @@ public class DealHitCommand implements CommandExecutor {
 			} else { 
 				player = plugin.getServer().getPlayer(args[0]);
 			}
+			
 			if (player == null) {
 				sender.sendMessage(ChatColor.RED
 						+ "That player does not exist!");
@@ -40,17 +41,19 @@ public class DealHitCommand implements CommandExecutor {
 			} else {
 				GildorymClasses gildorymClasses = (GildorymClasses) Bukkit.getServer().getPluginManager().getPlugin("GildorymClasses");
 				CharacterCard characterCard = plugin.getCharacterCards().get(player.getName());
+				
 				if (characterCard == null) {
 					characterCard = new CharacterCard(0, Gender.UNKNOWN, "", Race.UNKNOWN, gildorymClasses.levels.get(player.getName()), gildorymClasses.classes.get(player.getName()));
 					plugin.getCharacterCards().put(player.getName(), characterCard);
 				}
+				
 				Race race = characterCard.getRace();
 				CharacterClass clazz;
 				Integer level;
 				
 				try {
-				clazz = gildorymClasses.classes.get(sender.getName());
-				level = gildorymClasses.levels.get(sender.getName());
+				clazz = gildorymClasses.classes.get(player.getName());
+				level = gildorymClasses.levels.get(player.getName());
 				} catch (Exception ex) {
 					clazz = null;
 					level = 0;
