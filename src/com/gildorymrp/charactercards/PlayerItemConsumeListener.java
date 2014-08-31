@@ -26,7 +26,7 @@ public class PlayerItemConsumeListener implements Listener{
 			if (event.getItem() != null) {
 				if (event.getItem().getType() == Material.POTION) {
 					int healingAmount = 0;
-					boolean returnMessage = true
+					boolean returnMessage = true;
 					if (event.getItem().getDurability() == 8261 || event.getItem().getDurability() == 8197) {
 						healingAmount = 1;
 					} else if (event.getItem().getDurability() == 8229 ) {
@@ -54,7 +54,7 @@ public class PlayerItemConsumeListener implements Listener{
 						characterCard.setHealth(characterCard.getHealth() + healingAmount);
 					} else if (characterCard.getHealth() < maxHealth) {
 						characterCard.setHealth(maxHealth);
-					} else if (characterCard.getHealth >= maxHealth){
+					} else if (characterCard.getHealth() >= maxHealth){
 						return;
 						/*
 						* There is no reason to calculate anything further,
