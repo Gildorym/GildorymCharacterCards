@@ -23,26 +23,24 @@ public class SetRaceCommand implements CommandExecutor {
 		
 		Player player = null;
 		if (args.length < 1) {
-			sender.sendMessage(ChatColor.RED
-					+ "You need to specify a race!");
+			sender.sendMessage(ChatColor.RED + "You need to specify a race!");
 			return true;
 		} else if (args.length == 1) {
 			if (sender instanceof Player) {
 				player = (Player) sender;
 			} else {
-				sender.sendMessage(ChatColor.RED
-						+ "Only a player can perform this command!");
+				sender.sendMessage(ChatColor.RED + "Only a player can perform this command!");
 				return true;
 			}
 		} else {
 			if (!sender.hasPermission("gildorym.setraceother")) {
-				sender.sendMessage(ChatColor.RED
-						+ "You do not have permission to change another player's race!");
+				sender.sendMessage(ChatColor.RED + "You do not have permission to change another player's race!");
+				return true;
 			}
 			player = sender.getServer().getPlayer(args[1]);
 			if (player == null) {
-				sender.sendMessage(ChatColor.RED
-						+ "That player does not exist!");
+				sender.sendMessage(ChatColor.RED + "That player does not exist!");
+				return true;
 			}
 		}
 		
@@ -50,8 +48,8 @@ public class SetRaceCommand implements CommandExecutor {
 			plugin.getCharacterCards().put(player.getName(), new CharacterCard(0, Gender.UNKNOWN, "", Race.UNKNOWN, gildorymClasses.levels.get(sender.getName()), gildorymClasses.classes.get(sender.getName())));
 		} else if (plugin.getCharacterCards().get(player.getName()).getRace() != Race.UNKNOWN) {
 			if (!sender.hasPermission("gildorym.setraceother")) {
-				sender.sendMessage(ChatColor.RED
-						+ "You have already set your race!");
+				sender.sendMessage(ChatColor.RED + "You have already set your race!");
+				return true;
 			}
 		}
 		
